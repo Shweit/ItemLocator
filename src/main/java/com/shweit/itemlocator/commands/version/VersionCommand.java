@@ -1,9 +1,9 @@
-package com.shweit.untitled.commands.version;
+package com.shweit.itemlocator.commands.version;
 
-import com.shweit.untitled.Untitled;
-import com.shweit.untitled.commands.SubCommand;
-import com.shweit.untitled.utils.Translator;
-import com.shweit.untitled.utils.UpdateChecker;
+import com.shweit.itemlocator.ItemLocator;
+import com.shweit.itemlocator.commands.SubCommand;
+import com.shweit.itemlocator.utils.Translator;
+import com.shweit.itemlocator.utils.UpdateChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -31,7 +31,7 @@ public final class VersionCommand extends SubCommand {
     @Override
     public void perform(final CommandSender commandSender, final Command command, final String label, final String[] args) {
         Map<String, String> params = new HashMap<>();
-        params.put("version", Untitled.getInstance().getDescription().getVersion());
+        params.put("version", ItemLocator.getInstance().getDescription().getVersion());
         commandSender.sendMessage(ChatColor.GREEN + Translator.getTranslation("current_version", params));
         commandSender.sendMessage("");
         commandSender.sendMessage(ChatColor.GREEN + Translator.getTranslation("checking_for_updates"));

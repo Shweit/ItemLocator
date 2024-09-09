@@ -1,5 +1,5 @@
-# Untitled Plugin
-<img src="https://img.shields.io/github/actions/workflow/status/Shweit/REPO/runtime.yml" /> <img src="https://img.shields.io/github/v/release/Shweit/REPO" /> <img src="https://img.shields.io/github/license/Shweit/REPO" />
+# ItemLocator
+<img src="https://img.shields.io/github/actions/workflow/status/Shweit/ItemLocator/runtime.yml" /> <img src="https://img.shields.io/github/v/release/Shweit/ItemLocator" /> <img src="https://img.shields.io/github/license/Shweit/ItemLocator" />
 
 ## Overview
 Description
@@ -32,7 +32,7 @@ gradle build
 ### Setting up the Minecraft Server
 3. Copy the generated JAR file to the `plugins` directory of your Minecraft server.
 ```shell
-cp build/libs/untitled-*.jar /path/to/your/minecraft/server/plugins
+cp build/libs/ItemLocator-*.jar /path/to/your/minecraft/server/plugins
 ```
 4. Start or restart your Minecraft server.
 ```shell

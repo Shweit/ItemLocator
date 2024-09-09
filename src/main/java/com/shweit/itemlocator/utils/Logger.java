@@ -1,6 +1,6 @@
-package com.shweit.untitled.utils;
+package com.shweit.itemlocator.utils;
 
-import com.shweit.untitled.Untitled;
+import com.shweit.itemlocator.ItemLocator;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Level;
@@ -11,7 +11,7 @@ public final class Logger {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
-    private static final String PREFIX = "[Untitled] ";
+    private static final String PREFIX = "[ItemLocator] ";
 
     public static void info(final String message) {
         Bukkit.getLogger().log(Level.INFO, PREFIX + message);
@@ -26,7 +26,7 @@ public final class Logger {
     }
 
     public static void debug(final String message) {
-        boolean debugMode = Untitled.config.getBoolean("debug", false);
+        boolean debugMode = ItemLocator.config.getBoolean("debug", false);
 
         if (debugMode) {
             Bukkit.getLogger().log(Level.INFO, "[DEBUG] " + PREFIX + message);

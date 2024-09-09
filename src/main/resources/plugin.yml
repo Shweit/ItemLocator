@@ -1,12 +1,11 @@
-name: untitled
+name: ItemLocator
 version: '1.0'
-main: com.shweit.untitled.Untitled
+main: com.shweit.itemlocator.ItemLocator
 api-version: '1.21'
 authors: [ Shweit ]
 
 commands:
-  untitled:
-    description: "Main command for the Untitled plugin."
-    usage: "/untitled"
-    permission: "untitled.command"
+  itemlocator:
+    description: "Main command for the ItemLocator plugin."
+    usage: "/itemlocator"
     aliases: [ u ]

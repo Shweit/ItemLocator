@@ -1,6 +1,6 @@
-package com.shweit.untitled.utils;
+package com.shweit.itemlocator.utils;
 
-import com.shweit.untitled.Untitled;
+import com.shweit.itemlocator.ItemLocator;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,7 +23,7 @@ public final class UpdateChecker implements Listener {
         latestVersion = fetchLatestVersion();
 
         if (latestVersion != null) {
-            String currentVersion = Untitled.getInstance().getDescription().getVersion();
+            String currentVersion = ItemLocator.getInstance().getDescription().getVersion();
 
             return !latestVersion.equals(currentVersion);
         } else {
@@ -35,12 +35,12 @@ public final class UpdateChecker implements Listener {
 
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent event) {
-        if (event.getPlayer().hasPermission("untitled.version")) {
+        if (event.getPlayer().hasPermission("itemlocator.version")) {
             if (checkForPluginUpdate()) {
                 event.getPlayer().sendMessage(ChatColor.GREEN + Translator.getTranslation("update_available_player_join"));
 
                 event.getPlayer().sendMessage(ChatColor.GREEN + Translator.getTranslation("current_version",
-                        Map.of("version", Untitled.getInstance().getDescription().getVersion())));
+                        Map.of("version", ItemLocator.getInstance().getDescription().getVersion())));
                 event.getPlayer().sendMessage(ChatColor.GREEN + Translator.getTranslation("new_version",
                         Map.of("version", latestVersion)));
             }

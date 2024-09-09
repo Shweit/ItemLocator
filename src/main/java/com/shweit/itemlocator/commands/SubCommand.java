@@ -1,4 +1,4 @@
-package com.shweit.untitled.commands;
+package com.shweit.itemlocator.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

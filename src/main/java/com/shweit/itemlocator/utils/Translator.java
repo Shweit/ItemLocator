@@ -1,6 +1,6 @@
-package com.shweit.untitled.utils;
+package com.shweit.itemlocator.utils;
 
-import com.shweit.untitled.Untitled;
+import com.shweit.itemlocator.ItemLocator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.shweit.untitled.Untitled.config;
+import static com.shweit.itemlocator.ItemLocator.config;
 
 public abstract class Translator {
     private static Map<String, String> translations = new HashMap<>();
@@ -23,7 +23,7 @@ public abstract class Translator {
 
         currentLang = config.getString("lang", "en"); // Default to English if not specified
 
-        File langFile = new File(Untitled.getInstance().getDataFolder() + File.separator + "lang", currentLang + ".yml");
+        File langFile = new File(ItemLocator.getInstance().getDataFolder() + File.separator + "lang", currentLang + ".yml");
 
         if (!langFile.exists()) {
             Logger.warning("Language file not found: " + currentLang + ".yml. Falling back to default.");

@@ -1,8 +1,7 @@
-package com.shweit.untitled.commands;
+package com.shweit.itemlocator.commands;
 
-import com.shweit.untitled.Untitled;
-import com.shweit.untitled.commands.version.VersionCommand;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.shweit.itemlocator.ItemLocator;
+import com.shweit.itemlocator.commands.version.VersionCommand;
 
 import java.util.List;
 
@@ -12,6 +11,6 @@ public final class RegisterCommands {
             new VersionCommand()
         );
         CommandManager mainCommandManager = new CommandManager(subCommands);
-        Untitled.getInstance().getCommand("untitled").setExecutor(mainCommandManager);
+        ItemLocator.getInstance().getCommand("itemlocator").setExecutor(mainCommandManager);
     }
 }
