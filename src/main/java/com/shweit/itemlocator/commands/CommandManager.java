@@ -1,8 +1,12 @@
 package com.shweit.itemlocator.commands;
 
+import com.shweit.itemlocator.gui.ItemLocatorGUI;
+import com.shweit.itemlocator.utils.Translator;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,12 @@ public final class CommandManager implements TabExecutor {
                 }
             }
 
+        } else {
+            if (commandSender instanceof Player player) {
+                new ItemLocatorGUI(player).openInventory(player, 0);
+            } else {
+                commandSender.sendMessage(ChatColor.RED + Translator.getTranslation("player_only_command"));
+            }
         }
 
         return true;
