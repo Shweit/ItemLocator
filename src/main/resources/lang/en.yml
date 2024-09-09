@@ -1,0 +1,6 @@
+update_available_player_join: "A new version of the Untitled plugin is available."
+current_version: "Current version: ${version}"
+new_version: "New version: ${version}"
+checking_for_updates: "Checking for updates..."
+update_available: "An update is available for the Untitled plugin. Please update to the latest version. Latest version: ${version}"
+no_update_available: "No updates available."

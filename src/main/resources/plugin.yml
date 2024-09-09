@@ -1,0 +1,12 @@
+name: untitled
+version: '1.0'
+main: com.shweit.untitled.Untitled
+api-version: '1.21'
+authors: [ Shweit ]
+
+commands:
+  untitled:
+    description: "Main command for the Untitled plugin."
+    usage: "/untitled"
+    permission: "untitled.command"
+    aliases: [ u ]
