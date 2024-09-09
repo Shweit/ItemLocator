@@ -1,6 +1,8 @@
 package com.shweit.itemlocator;
 
 import com.shweit.itemlocator.commands.RegisterCommands;
+import com.shweit.itemlocator.listeners.InventoryClose;
+import com.shweit.itemlocator.utils.DatabaseConnectionManager;
 import com.shweit.itemlocator.utils.Translator;
 import com.shweit.itemlocator.utils.UpdateChecker;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,8 +19,8 @@ public final class ItemLocator extends JavaPlugin {
         createConfig();
         config = getConfig();
         Translator.loadLanguageFile();
-
-        getServer().getPluginManager().registerEvents(new UpdateChecker(), this);
+        new DatabaseConnectionManager().setUpDatabase();
+        registerListeners();
         RegisterCommands.register();
     }
 
@@ -40,5 +42,10 @@ public final class ItemLocator extends JavaPlugin {
 
     public static ItemLocator getInstance() {
         return getPlugin(ItemLocator.class);
+    }
+
+    private void registerListeners() {
+        getServer().getPluginManager().registerEvents(new UpdateChecker(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClose(), this);
     }
 }
