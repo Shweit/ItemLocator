@@ -5,7 +5,7 @@ import com.shweit.itemlocator.commands.version.VersionCommand;
 
 import java.util.List;
 
-public final class RegisterCommands {
+public abstract class RegisterCommands {
     public static void register() {
         List<SubCommand> subCommands = List.of(
             new VersionCommand()
