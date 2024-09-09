@@ -2,6 +2,7 @@ package com.shweit.itemlocator;
 
 import com.shweit.itemlocator.commands.RegisterCommands;
 import com.shweit.itemlocator.listeners.InventoryClose;
+import com.shweit.itemlocator.listeners.ShulkerBreakListener;
 import com.shweit.itemlocator.utils.DatabaseConnectionManager;
 import com.shweit.itemlocator.utils.Translator;
 import com.shweit.itemlocator.utils.UpdateChecker;
@@ -47,5 +48,6 @@ public final class ItemLocator extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new UpdateChecker(), this);
         getServer().getPluginManager().registerEvents(new InventoryClose(), this);
+        getServer().getPluginManager().registerEvents(new ShulkerBreakListener(), this);
     }
 }
