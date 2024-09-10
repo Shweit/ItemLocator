@@ -1,14 +1,21 @@
 package com.shweit.itemlocator.commands;
 
+import com.shweit.itemlocator.ItemLocator;
 import com.shweit.itemlocator.gui.ItemLocatorGUI;
 import com.shweit.itemlocator.utils.DatabaseConnectionManager;
 import com.shweit.itemlocator.utils.Translator;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -81,6 +88,9 @@ public final class CommandManager implements TabExecutor {
                 for (String coord : coordinates) {
                     player.sendMessage("  " + ChatColor.GRAY + coord);
                 }
+
+                spawnGlowingMarker(player, coordinates);
+                spawnFakeBeaconBeam(player, coordinates);
             } else {
                 player.sendMessage(ChatColor.RED + Translator.getTranslation("no_item_found", Map.of("item", material.name())));
             }
@@ -88,6 +98,81 @@ public final class CommandManager implements TabExecutor {
         } catch (SQLException e) {
             e.printStackTrace();
             player.sendMessage(ChatColor.RED + "An error occurred while trying to retrieve the data.");
+        }
+    }
+
+    public void spawnGlowingMarker(final Player player, final List<String> coordinatesList) {
+        for (String coord : coordinatesList) {
+            String[] parts = coord.replace("x:", "").replace("y:", "").replace("z:", "").split(",");
+            int x = Integer.parseInt(parts[0].trim());
+            int y = Integer.parseInt(parts[1].trim());
+            int z = Integer.parseInt(parts[2].trim());
+
+            // Adjust the height so the Armor Stand is floating above the chest
+            Location location = new Location(player.getWorld(), x + 0.5, y + 1.5, z + 0.5);
+
+            // Spawn the Armor Stand and cast it correctly
+            ArmorStand marker = (ArmorStand) location.getWorld().spawn(location, ArmorStand.class);
+
+            // Now we can apply the specific Armor Stand properties
+            marker.setVisible(true);   // Make it invisible
+            marker.setMarker(false);     // Make it a marker (no hitbox)
+            marker.setInvulnerable(true); // Make it invulnerable
+            marker.setCustomName("§aItem Location"); // Optional: Give it a custom name
+            marker.setCustomNameVisible(true); // Optional: Show the name
+
+            // Add Glowing effect via a PotionEffect (alternative method)
+            marker.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, false, false));
+
+            // Schedule a task to remove the marker after 10 seconds
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    marker.remove(); // Remove the marker after 10 seconds
+                }
+            }.runTaskLater(ItemLocator.getInstance(), 200L); // 200 ticks = 10 seconds
+        }
+
+        player.sendMessage(ChatColor.GREEN + "The item locations are marked with glowing entities.");
+    }
+
+    public void spawnFakeBeaconBeam(final Player player, final List<String> coordinatesList) {
+        for (String coord : coordinatesList) {
+            String[] parts = coord.replace("x:", "").replace("y:", "").replace("z:", "").split(",");
+            int x = Integer.parseInt(parts[0].trim());
+            int y = Integer.parseInt(parts[1].trim());
+            int z = Integer.parseInt(parts[2].trim());
+
+            Location location = new Location(player.getWorld(), x + 0.5, y, z + 0.5);
+            double maxHeight = player.getWorld().getMaxHeight();  // Max build height
+            double startY = location.getY();
+
+            // Create the particle beam from startY to maxHeight in one tick
+            new BukkitRunnable() {
+                int tickCount = 0;  // Track how many ticks have passed
+
+                @Override
+                public void run() {
+                    // Stop after 20 seconds (400 ticks)
+                    if (tickCount >= 200) {
+                        this.cancel();
+                        return;
+                    }
+
+                    // Create the entire beam from the current block to the max height
+                    for (double y = startY; y < maxHeight; y += 0.5) {
+                        Location particleLocation = new Location(location.getWorld(), location.getX(), y, location.getZ());
+
+                        // Show a particle (this is the fake beam)
+                        player.getWorld().spawnParticle(Particle.END_ROD, particleLocation, 0, 0, 1, 0, 0.1);
+                    }
+
+                    // Increment the tick counter
+                    tickCount++;
+                }
+            }.runTaskTimer(ItemLocator.getInstance(), 0L, 1L);  // Run every tick for 20 seconds
+
+            player.sendMessage(ChatColor.GREEN + "The item locations are marked with beacon-like beams.");
         }
     }
 
