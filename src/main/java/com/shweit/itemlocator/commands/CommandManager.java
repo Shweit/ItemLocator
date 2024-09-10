@@ -13,8 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.Connection;
@@ -112,17 +110,15 @@ public final class CommandManager implements TabExecutor {
             Location location = new Location(player.getWorld(), x + 0.5, y + 1.5, z + 0.5);
 
             // Spawn the Armor Stand and cast it correctly
-            ArmorStand marker = (ArmorStand) location.getWorld().spawn(location, ArmorStand.class);
+            ArmorStand marker = location.getWorld().spawn(location, ArmorStand.class);
 
             // Now we can apply the specific Armor Stand properties
-            marker.setVisible(true);   // Make it invisible
-            marker.setMarker(false);     // Make it a marker (no hitbox)
+            marker.setVisible(false);   // Make it invisible
+            marker.setMarker(true);     // Make it a marker (no hitbox)
             marker.setInvulnerable(true); // Make it invulnerable
             marker.setCustomName("§aItem Location"); // Optional: Give it a custom name
             marker.setCustomNameVisible(true); // Optional: Show the name
-
-            // Add Glowing effect via a PotionEffect (alternative method)
-            marker.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, false, false));
+            marker.setGlowing(true); // Make it glow
 
             // Schedule a task to remove the marker after 10 seconds
             new BukkitRunnable() {
@@ -132,8 +128,6 @@ public final class CommandManager implements TabExecutor {
                 }
             }.runTaskLater(ItemLocator.getInstance(), 200L); // 200 ticks = 10 seconds
         }
-
-        player.sendMessage(ChatColor.GREEN + "The item locations are marked with glowing entities.");
     }
 
     public void spawnFakeBeaconBeam(final Player player, final List<String> coordinatesList) {
@@ -171,8 +165,6 @@ public final class CommandManager implements TabExecutor {
                     tickCount++;
                 }
             }.runTaskTimer(ItemLocator.getInstance(), 0L, 1L);  // Run every tick for 20 seconds
-
-            player.sendMessage(ChatColor.GREEN + "The item locations are marked with beacon-like beams.");
         }
     }
 
