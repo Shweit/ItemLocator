@@ -77,7 +77,7 @@ public final class ItemLocatorGUI implements Listener {
             String[] coordsArray = coordinatesString.split(",");
             for (int i = 0; i < coordsArray.length; i += 3) {
                 // Group every three elements (x, y, z) into a coordinate string
-                String coords = "x: " + coordsArray[i] + ", y: " + coordsArray[i + 1] + ", z: " + coordsArray[i + 2];
+                String coords = "x:" + coordsArray[i] + ", y: " + coordsArray[i + 1] + ", z: " + coordsArray[i + 2];
                 coordinatesList.add(coords);
             }
         }
