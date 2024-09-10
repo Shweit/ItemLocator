@@ -23,7 +23,7 @@ public final class InventoryClose implements Listener {
     public void onInventoryClose(final InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
 
-        if (isValidContainer(inventory)) {
+        if (isValidContainer(inventory) && !event.getView().getTitle().startsWith("Item Locator")) {
             String playerUUID = event.getPlayer().getUniqueId().toString();
             String coordinates = event.getInventory().getLocation().getBlockX() + ","
                     + event.getInventory().getLocation().getBlockY() + ","

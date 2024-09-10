@@ -194,6 +194,9 @@ public final class ItemLocatorGUI implements Listener {
             } else if (itemName.equals("Previous Page")) {
                 openInventory((org.bukkit.entity.Player) event.getWhoClicked(), currentPage - 1);
                 currentPage--;
+            } else if (!itemName.equals(" ")) {
+                Bukkit.dispatchCommand(event.getWhoClicked(), "itemlocator " + event.getCurrentItem().getType().name());
+                event.getWhoClicked().closeInventory();
             }
         }
     }
