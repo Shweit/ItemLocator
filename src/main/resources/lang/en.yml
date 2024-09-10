@@ -6,3 +6,4 @@ update_available: "An update is available for the ItemLocator plugin. Please upd
 no_update_available: "No updates available."
 player_only_command: "This command can only be executed by a player."
 found_item: "Found ${total} items of type ${item} at:"
+no_item_found: "No items of type ${item} found."

@@ -66,7 +66,7 @@ public final class CommandManager implements TabExecutor {
 
                 // Handle potential null values for "item" and "total"
                 if (item == null || total == null || coordinatesString == null) {
-                    player.sendMessage(ChatColor.RED + "No data found for the requested item.");
+                    player.sendMessage(ChatColor.RED + Translator.getTranslation("no_item_found", Map.of("item", material.name())));
                     return;
                 }
 
@@ -82,7 +82,7 @@ public final class CommandManager implements TabExecutor {
                     player.sendMessage("  " + ChatColor.GRAY + coord);
                 }
             } else {
-                player.sendMessage(ChatColor.RED + "No entries found for the item: " + material.name());
+                player.sendMessage(ChatColor.RED + Translator.getTranslation("no_item_found", Map.of("item", material.name())));
             }
 
         } catch (SQLException e) {
