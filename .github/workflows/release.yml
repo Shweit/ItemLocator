@@ -27,18 +27,18 @@ jobs:
       - name: Upload to release
         uses: softprops/action-gh-release@v1
         with:
-          files: build/libs/ChestSorter*.jar
+          files: build/libs/ItemLocator*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Modrinth Publish
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          modrinth-id: 'EIZluDTM'
+          modrinth-id: 'KdP8r14n'
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-featured: true
           files: |
-            build/libs/ChestSorter-${{ github.event.release.tag_name }}.jar
+            build/libs/ItemLocator-${{ github.event.release.tag_name }}.jar
           loaders: |
             spigot
             paper
