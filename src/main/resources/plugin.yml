@@ -8,4 +8,4 @@ commands:
   itemlocator:
     description: "Main command for the ItemLocator plugin."
     usage: "/itemlocator"
-    aliases: [ u ]
+    aliases: [ il ]
