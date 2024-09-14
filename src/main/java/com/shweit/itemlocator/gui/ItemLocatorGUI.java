@@ -7,11 +7,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.Connection;
@@ -28,7 +30,13 @@ public final class ItemLocatorGUI implements Listener {
     public ItemLocatorGUI(final Player player) {
         this.plugin = ItemLocator.getInstance();
         this.allItems = getItemsForPlayer(player.getUniqueId().toString());
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+        // Register the event listener for the GUI
+        List<RegisteredListener> registeredListeners = HandlerList.getRegisteredListeners(plugin);
+        boolean isRegistered = registeredListeners.stream().anyMatch(registeredListener -> registeredListener.getListener() instanceof ItemLocatorGUI);
+        if (!isRegistered) {
+            Bukkit.getPluginManager().registerEvents(this, plugin);
+        }
     }
 
     public List<Map<String, Object>> getItemsForPlayer(final String playerUUID) {
@@ -182,18 +190,35 @@ public final class ItemLocatorGUI implements Listener {
         if (event.getView().getTitle().startsWith("Item Locator")) {
             event.setCancelled(true);  // Prevent players from taking items from the GUI
 
-            if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta()) {
+            if (event.getCurrentItem() == null) {
                 return;
             }
 
-            String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
+            ItemStack currentItem = event.getCurrentItem();
+            Material itemType = currentItem.getType();
 
-            if (itemName.equals("Next Page")) {
-                openInventory((org.bukkit.entity.Player) event.getWhoClicked(), currentPage + 1);
-                currentPage++;
-            } else if (itemName.equals("Previous Page")) {
-                openInventory((org.bukkit.entity.Player) event.getWhoClicked(), currentPage - 1);
-                currentPage--;
+            // Check if the clicked item is a navigation button or placeholder
+            if (currentItem.hasItemMeta()) {
+                ItemMeta itemMeta = currentItem.getItemMeta();
+                if (itemMeta != null && itemMeta.hasDisplayName()) {
+                    String itemName = itemMeta.getDisplayName();
+
+                    if (itemName.equals("Next Page")) {
+                        openInventory((org.bukkit.entity.Player) event.getWhoClicked(), currentPage + 1);
+                        currentPage++;
+                        return;
+                    } else if (itemName.equals("Previous Page")) {
+                        openInventory((org.bukkit.entity.Player) event.getWhoClicked(), currentPage - 1);
+                        currentPage--;
+                        return;
+                    }
+                }
+            }
+
+            // Check if the item is not a placeholder
+            if (itemType != Material.GRAY_STAINED_GLASS_PANE) {
+                Bukkit.dispatchCommand(event.getWhoClicked(), "itemlocator locate " + itemType.name().toLowerCase());
+                event.getWhoClicked().closeInventory();
             }
         }
     }

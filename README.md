@@ -10,10 +10,10 @@ ItemLocator helps players track and locate items in Minecraft chests by marking 
 - **Player-Specific Views:** Each player has their own view of chest contents, ensuring privacy.
 
 ## Commands
-`/itemlocator` - Opens the GUI displaying all tracked items.
+`/itemlocator gui` - Opens the GUI displaying all tracked items.
 - **Description:** Opens a GUI where players can view all items they have previously stored and their locations.
 
-`/itemlocator <item_name>` - Searches for the specified item and displays its locations.
+`/itemlocator locate <item_name>` - Searches for the specified item and displays its locations.
 - **Description:** Finds the locations of a specific item stored in chests.
 
 ## Installation

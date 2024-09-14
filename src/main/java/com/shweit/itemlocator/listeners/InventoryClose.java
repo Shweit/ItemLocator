@@ -23,7 +23,7 @@ public final class InventoryClose implements Listener {
     public void onInventoryClose(final InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
 
-        if (isValidContainer(inventory)) {
+        if (isValidContainer(event)) {
             String playerUUID = event.getPlayer().getUniqueId().toString();
             String coordinates = event.getInventory().getLocation().getBlockX() + ","
                     + event.getInventory().getLocation().getBlockY() + ","
@@ -64,11 +64,18 @@ public final class InventoryClose implements Listener {
         }
     }
 
-    private boolean isValidContainer(final Inventory inventory) {
-        return switch (inventory.getType()) {
+    private boolean isValidContainer(final InventoryCloseEvent event) {
+        boolean validContainer;
+        validContainer = switch (event.getInventory().getType()) {
             case CHEST, DISPENSER, DROPPER, FURNACE, HOPPER, SHULKER_BOX, BARREL, BLAST_FURNACE, SMOKER -> true;
             default -> false;
         };
+
+        if (event.getView().getTitle().startsWith("Item Locator")) {
+            validContainer = false;
+        }
+
+        return validContainer;
     }
 
     private Set<String> loadItemsFromDatabase(final String playerUUID, final String coordinates) {
