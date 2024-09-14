@@ -37,6 +37,8 @@ jobs:
           modrinth-id: 'KdP8r14n'
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           modrinth-featured: true
+          curseforge-id: '1101655'
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           files: |
             build/libs/ItemLocator-${{ github.event.release.tag_name }}.jar
           loaders: |
@@ -47,4 +49,6 @@ jobs:
             >=1.9 <=1.21.1
           game-version-filter: 'releases'
           java: 21
+          retry-attempts: '5'
+          retry-delay: '1000'
 
