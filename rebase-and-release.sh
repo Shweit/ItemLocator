@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script to rebase all release/* branches on master and create GitHub releases
+# Script to rebase all release/* branches on main and create GitHub releases
 # Author: MinecraftServerAPI Team
 # Date: 2025-09-06
 
@@ -56,10 +56,10 @@ fi
 log_info "Fetching latest changes from remote..."
 git fetch --all --prune > /dev/null 2>&1
 
-# Switch to master and update
-log_info "Switching to master branch..."
-git checkout master > /dev/null 2>&1
-git pull origin master > /dev/null 2>&1
+# Switch to main and update
+log_info "Switching to main branch..."
+git checkout main > /dev/null 2>&1
+git pull origin main > /dev/null 2>&1
 
 # Get all release/* branches
 RELEASE_BRANCHES=$(git branch -r | grep 'origin/release/' | sed 's/origin\///' | sort -V)
@@ -83,7 +83,7 @@ FAILED_RELEASES=()
 
 # Rebase all release branches
 printf "\n"
-log_info "=== PHASE 1: Rebase all release branches on master ==="
+log_info "=== PHASE 1: Rebase all release branches on main ==="
 printf "\n"
 
 for branch in $RELEASE_BRANCHES; do
@@ -93,8 +93,8 @@ for branch in $RELEASE_BRANCHES; do
     if git checkout "$branch" > /dev/null 2>&1 || git checkout -b "$branch" "origin/$branch" > /dev/null 2>&1; then
         
         # Try rebase
-        log_info "Rebasing $branch on master..."
-        if git rebase master > /dev/null 2>&1; then
+        log_info "Rebasing $branch on main..."
+        if git rebase main > /dev/null 2>&1; then
             log_success "Rebase of $branch successful!"
             
             # Force push (since we rebased)
@@ -112,7 +112,7 @@ for branch in $RELEASE_BRANCHES; do
         else
             # Show error output when rebase fails
             log_error "Rebase of $branch failed! Skipping..."
-            git rebase master 2>&1 | head -10 | sed 's/^/  /'
+            git rebase main 2>&1 | head -10 | sed 's/^/  /'
             FAILED_REBASES+=("$branch")
             git rebase --abort > /dev/null 2>&1 || true
         fi
@@ -124,8 +124,8 @@ for branch in $RELEASE_BRANCHES; do
     printf "\n"
 done
 
-# Switch back to master for release creation
-git checkout master > /dev/null 2>&1
+# Switch back to main for release creation
+git checkout main > /dev/null 2>&1
 
 printf "\n"
 log_info "=== PHASE 2: Create GitHub Releases ==="
@@ -152,7 +152,7 @@ for branch in "${SUCCESSFUL_REBASES[@]}"; do
 Supports Minecraft $VERSION
 
 ### 📦 Changes
-- Rebased on latest master branch
+- Rebased on latest main branch
 - Includes all current features and bugfixes
 
 ### 🔄 Latest Change
@@ -205,7 +205,7 @@ See [README.md](https://github.com/$(gh repo view --json nameWithOwner -q .nameW
                 
                 # Trigger the release workflow manually since gh CLI doesn't trigger it automatically
                 log_info "Triggering release workflow for $TAG_NAME..."
-                if gh workflow run release.yml -f release_tag="$TAG_NAME" --ref master > /dev/null 2>&1; then
+                if gh workflow run release.yml -f release_tag="$TAG_NAME" --ref main > /dev/null 2>&1; then
                     log_success "Release workflow triggered for $TAG_NAME"
                 else
                     log_warning "Could not trigger release workflow for $TAG_NAME (manual trigger may be needed)"
