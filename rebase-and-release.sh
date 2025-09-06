@@ -181,7 +181,7 @@ See [README.md](https://github.com/$(gh repo view --json nameWithOwner -q .nameW
     # Build the project
     log_info "Building JAR file for $VERSION..."
     if ./gradlew build > /dev/null 2>&1; then
-        JAR_FILE=$(find target -name "ItemLocator-*.jar" | head -1)
+        JAR_FILE=$(find build/libs -name "ItemLocator-*.jar" | head -1)
         
         if [ -f "$JAR_FILE" ]; then
             # Create or update release
