@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script to rebase all release/* branches on main and create GitHub releases
-# Author: MinecraftServerAPI Team
+# Author: ItemLocator Team
 # Date: 2025-09-06
 
 set -e  # Exit on error
@@ -146,7 +146,7 @@ for branch in "${SUCCESSFUL_REBASES[@]}"; do
     LAST_COMMIT=$(git log -1 --pretty=format:"%s")
     
     # Generate release notes
-    RELEASE_NOTES="## MinecraftServerAPI v$VERSION
+    RELEASE_NOTES="## ItemLocator v$VERSION
 
 ### 🎮 Minecraft Version
 Supports Minecraft $VERSION
@@ -180,8 +180,8 @@ See [README.md](https://github.com/$(gh repo view --json nameWithOwner -q .nameW
     
     # Build the project
     log_info "Building JAR file for $VERSION..."
-    if mvn clean package -DskipTests > /dev/null 2>&1; then
-        JAR_FILE=$(find target -name "MinecraftServerAPI-*.jar" | head -1)
+    if ./gradlew build > /dev/null 2>&1; then
+        JAR_FILE=$(find target -name "ItemLocator-*.jar" | head -1)
         
         if [ -f "$JAR_FILE" ]; then
             # Create or update release
@@ -195,11 +195,11 @@ See [README.md](https://github.com/$(gh repo view --json nameWithOwner -q .nameW
             
             # Create new release (don't use --draft to ensure workflow triggers)
             if gh release create "$TAG_NAME" \
-                --title "MinecraftServerAPI v$VERSION" \
+                --title "ItemLocator v$VERSION" \
                 --notes "$RELEASE_NOTES" \
                 --target "$branch" \
                 --latest=false \
-                "$JAR_FILE#MinecraftServerAPI-$VERSION.jar" > /dev/null 2>&1; then
+                "$JAR_FILE#ItemLocator-$VERSION.jar" > /dev/null 2>&1; then
                 
                 log_success "Release $TAG_NAME successfully created!"
                 
@@ -216,11 +216,11 @@ See [README.md](https://github.com/$(gh repo view --json nameWithOwner -q .nameW
                 log_error "Failed to create release $TAG_NAME!"
                 # Show error output when release creation fails
                 gh release create "$TAG_NAME" \
-                    --title "MinecraftServerAPI v$VERSION" \
+                    --title "ItemLocator v$VERSION" \
                     --notes "$RELEASE_NOTES" \
                     --target "$branch" \
                     --latest=false \
-                    "$JAR_FILE#MinecraftServerAPI-$VERSION.jar" 2>&1 | sed 's/^/  /'
+                    "$JAR_FILE#ItemLocator-$VERSION.jar" 2>&1 | sed 's/^/  /'
                 FAILED_RELEASES+=("$VERSION")
             fi
         else
@@ -230,7 +230,7 @@ See [README.md](https://github.com/$(gh repo view --json nameWithOwner -q .nameW
     else
         log_error "Build failed for $VERSION!"
         # Show Maven error output
-        mvn clean package -DskipTests 2>&1 | tail -20 | sed 's/^/  /'
+        ./gradlew build 2>&1 | tail -20 | sed 's/^/  /'
         FAILED_RELEASES+=("$VERSION")
     fi
     
