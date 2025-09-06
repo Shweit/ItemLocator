@@ -30,12 +30,6 @@ log_error() {
     printf "${RED}[ERROR]${NC} %s\n" "$1"
 }
 
-# Check if we're in the right directory
-if [ ! -f "pom.xml" ] || [ ! -d ".git" ]; then
-    log_error "This script must be run from the MinecraftServerAPI project root directory!"
-    exit 1
-fi
-
 # Check if gh (GitHub CLI) is installed
 if ! command -v gh &> /dev/null; then
     log_error "GitHub CLI (gh) is not installed. Please install it with: brew install gh"
