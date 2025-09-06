@@ -20,15 +20,17 @@ jobs:
           # Checkout the specified tag
           ref: ${{ github.event.inputs.release_tag }}
 
-      - name: Set up JDK 17
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
-          cache: 'maven'
+          java-version: '21'
+          distribution: temurin
 
-      - name: Build with Maven
-        run: mvn clean package -DskipTests
+      - name: Set gradle project version
+        run: sed -i 's/version = .*/version = "${{ github.event.release.tag_name }}"/' build.gradle
+
+      - name: Build and package gradle project
+        run: gradle build
 
       - name: Get artifact info
         id: artifact
@@ -36,7 +38,7 @@ jobs:
           # Use the input tag
           VERSION="${{ github.event.inputs.release_tag }}"
           VERSION="${VERSION#v}"  # Remove 'v' prefix if present
-          echo "jar_path=$(find target/ -name 'MinecraftServerAPI-*.jar' | head -n 1)" >> $GITHUB_OUTPUT
+          echo "jar_path=$(find target/ -name 'ItemLocator-*.jar' | head -n 1)" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Processing version: ${VERSION}"
 
@@ -86,7 +88,7 @@ jobs:
 
           files: ${{ steps.artifact.outputs.jar_path }}
 
-          name: MinecraftServerAPI ${{ steps.artifact.outputs.version }}
+          name: ItemLocator ${{ steps.artifact.outputs.version }}
           version: msa-${{ steps.artifact.outputs.version }}
           version-type: release
           game-versions: |
@@ -96,7 +98,7 @@ jobs:
             spigot
             bukkit
           changelog: |
-            ## MinecraftServerAPI v${{ steps.artifact.outputs.version }}
+            ## ItemLocator v${{ steps.artifact.outputs.version }}
             
             ### Changes
             - Rebased on latest master branch
