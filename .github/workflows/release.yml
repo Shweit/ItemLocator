@@ -38,7 +38,7 @@ jobs:
           # Use the input tag
           VERSION="${{ github.event.inputs.release_tag }}"
           VERSION="${VERSION#v}"  # Remove 'v' prefix if present
-          echo "jar_path=$(find target/ -name 'ItemLocator-*.jar' | head -n 1)" >> $GITHUB_OUTPUT
+          echo "jar_path=$(find build/libs -name 'ItemLocator-*.jar' | head -n 1)" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Processing version: ${VERSION}"
 
